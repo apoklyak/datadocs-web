@@ -1,0 +1,57 @@
+<div class="navbar-wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header main-navbar-header">
+            <a class="navbar-brand" ng-click="toggleActiveSection(SECTIONS.MY_DATA, false, true)"></a>
+        </div>
+        <div class="flex-spacer"></div>
+    </nav>
+</div>
+
+<div id="wrapper"
+     class="resizable-wrapper mdc-typography"
+     ng-class="{'reset-sidebar-padding': isLandingPage()}">
+    <div id="page-content-wrapper" class="main-page-wrapper page-content-wrapper landing-page-content-wrapper">
+        <div class="main-page">
+
+            <div class="homescreen-container landing-container" ng-cloak>
+                <table>
+                    <tbody>
+                        <tr class="landing-container__top">
+                            <td width="35%" class="landing-container__top__left">
+                                <h2 class="landing-container__top__left__title dd--heading">Simplifying data</div>
+                                <div class="landing-container__top__left__text dd--body1">Datadocs allows individuals and organizations to work with data of any size with the ease of use of Excel and the collaborative possibilities of Google Docs.</div>
+                                <button class="create-doc blue spacing-top get-started-btn"
+                                        uib-tooltip="Click to start"
+                                        tooltip-placement="top"
+                                        tooltip-popup-delay="250"
+                                        tooltip-append-to-body="true"
+                                        tooltip-class="main-page-tooltip">
+                                    <span class="get-started-btn__text">
+                                        Get Started
+                                    </span>
+                                </button>
+                            </td>
+                            <td width="65%" class="landing-container__top__right">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/6XdGtqBJFrw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="landing-container__top__right__video"></iframe>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="landing-container__bottom"></div>
+
+                <footer class="footer">
+                    <div class="footer__logo">
+                        Datadocs
+                    </div>
+                    <div class="footer__logo-items">
+                        <ul>
+                            <li><a ui-sref="privacy-policy">Privacy</a></li>
+                            <li><a ui-sref="terms">Terms</a></li>
+                        </ul>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
