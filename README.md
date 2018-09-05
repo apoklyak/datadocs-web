@@ -31,13 +31,19 @@
 	For Mac:
 
 		sudo nano /usr/local/etc/nginx/sites-enabled/datadocs.com
+		
+		or add server entry in
+		
+		sudo nano /usr/local/etc/nginx/nginx.conf
 
-6. Put the below configuration inside it and Save it.
+6. Put the below configuration inside it and Save it. 
+	
+	Nginx config with SSL 
 	
 	```
 	server {
        
-        server_name  dev.datadocs.com;
+        server_name  <SERVER_DOMAIN_NAME>;
         listen [::]:443 ssl ipv6only=on; # managed by Certbot
         listen 443 ssl; # managed by Certbot
         ssl_certificate /etc/letsencrypt/live/dev.datadocs.com/fullchain.pem; # managed by Certbot
@@ -75,12 +81,12 @@
     }
     ```
     
-    Config without SSL
+    Nginx config without SSL
     
     ```server {
        
-        server_name  local.datadocs.com;
-        listen [::]:80;
+        server_name  <SERVER_DOMAIN_NAME>;
+        listen [::]:8080;
         
         root /var/www/datadocs;
  
@@ -108,7 +114,7 @@
         location = /50x.html {
             root   html;
         }
-    }``` 
+    }```  
 
 7. Start the nginx server:
 	
@@ -120,3 +126,6 @@
 
 		sudo nginx
 
+8. Hit URL http(s):<SERVER_HOST>:<PORT>:/. You're good if shows login page with correct CSS.
+
+9. Ensure to have API server up and running on API_SERVER_IP:API_SERVER_PORT in order to have features working
