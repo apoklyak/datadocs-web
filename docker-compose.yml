@@ -1,0 +1,12 @@
+version: '2'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./dev/Dockerfile
+    container_name: datadocs-web
+    ports:
+      - "8283:80"
+    volumes:
+      - ./build:/var/www/datadocs
+
