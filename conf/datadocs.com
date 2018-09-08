@@ -1,14 +1,14 @@
 server {
 
         listen       80;
-        server_name  localhost;
+        server_name  dev.datadocs.com;
 
 
         root /var/www/datadocs;
 
         location / {
-                  root /var/www/datadocs;
-                  index index.html index.htm;
+            root /var/www/datadocs;
+            index index.html index.htm;
             include mime.types;
         }
         location ~ \.css {
