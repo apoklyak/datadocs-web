@@ -9,4 +9,6 @@ services:
       - "8283:80"
     volumes:
       - ./build:/var/www/datadocs
-
+    environment:
+      SERVER_NAME: "dev.datadocs.com"
+      PROXY_URL_PORT: "http://10.138.0.7:9100"
