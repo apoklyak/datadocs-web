@@ -2,23 +2,30 @@
 
 1. Ensure you have nodejs, npm, gulp installed in your workstation (Following are the version application was tested and working)
 
-    gulp -v
-     CLI version 2.0.1
-     Local version 3.9.1
-    node -v
-       v8.11.2
-    npm -v
-       5.6.0
-2. Make sure datadocs-backend is up and running and listening on `http://localhost:9100`
-3. Run `gulp watch` from project root (i.e. datadocs-web)
-4. As soon as you see `Finished 'watch' after 5.84 μs` message in terminal, Front end should be up and listening on `http://localhost:8283`
-5. Hit http://localhost:8283 in browser. You are all set if you see login page with appropriate style.
+    1a. Install NodeJS LTS (Long Term Support) version  from https://nodejs.org/en/
+    
+        $ node -v
+           v8.11.2 [Version with which application is verified]
+        $ npm -v
+           5.6.0
+            
+    1b. Install gulp CLI and gulp using `sudo npm install gulp-cli -g` and `sudo npm install gulp -D`  
+        
+        $ gulp -v
+         CLI version 2.0.1
+         Local version 3.9.1
+        
+2. Make sure datadocs-backend is up and running and listening on `http://localhost:9100`. If you want change the host or port of backend server then you can do so in gulpfile.js file residing in project root. 
+3. Run `npm install` from project root directory
+4. Run `gulp watch` from project root (i.e. datadocs-web)
+5. As soon as you see `Finished 'watch' after 5.84 μs` message in terminal, Front end should be up and listening on `http://localhost:8283`
+6. Hit http://localhost:8283 in browser. You are all set if you see login page with appropriate style.
 
 Development in action
 
-6. Modify any label in `datadocs-web/src/templates/auth/login.html` For example change "Sign in to Datadocs" -> "Sign in to your Account"
-7. Move cursor off the file (or switch screen to browser) and rebuilding of static resources should trigger (observe in front-end terminal from where `gulp watch` was invoked)
-8. Refresh http://localhost:8383 and see the change in effect
+7. Modify any label in `datadocs-web/src/templates/auth/login.html` For example change "Sign in to Datadocs" -> "Sign in to your Account"
+8. Move cursor off the file (or switch screen to browser) and rebuilding of static resources should trigger (observe in front-end terminal from where `gulp watch` was invoked)
+9. Refresh http://localhost:8283 and see the change in effect
 
 #Steps for setup frontend project on Nginx:
 
