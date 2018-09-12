@@ -300,7 +300,7 @@
 
                         <button class="btn btn-filters btn-filters-blue"
                                 href="javascript:void(0)"
-                                ng-disabled="((!isIndexChanged() || !ingestPreviewLoaded) && !ingestDataSummary.query)"
+                                ng-disabled="(((!isIndexChanged() || !ingestPreviewLoaded) && !ingestDataSummary.query) || isExceedRowLimit())"
                                 ng-click="commit()">
                             {{getSaveDataMessage()}}
                         </button>
