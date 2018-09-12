@@ -725,10 +725,6 @@ define([
             return tab.state.flowJSON !== tab.state.pendingFlowJSON;
         };
 
-         $scope.isExceedRowLimit = function() {
-            return $scope.userExceedRowLimit;
-        };
-
         $scope.getSaveDataMessage = () => {
             const dataType = $scope.ingestDataSummary.queryMode ? "Query" : ($scope.ingestDataSummary.tableMode ? "Table" : "All");
             return `Save ${dataType} Data`;

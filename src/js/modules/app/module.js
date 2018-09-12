@@ -55,12 +55,21 @@ define([
       var notifierOpened = false;
 
       function notifyError (rejection){
-        if(rejection.status === 401 && rejection.config.url != "/api/auth/login" && !notifierOpened){
-        $window.localStorage.removeItem('userInfo');
-        $window.dispatchEvent(new StorageEvent('storage', {
-            key: 'userInfo'
-        }));
+        if(rejection.status === 401 &&
+          rejection.config.url != "/api/auth/login" &&
+          !notifierOpened){
           notifierOpened = true;
+          alertify.alert(
+            "<h2 class='margin10'>" +
+            "<i class='fa fa-sign-out'></i>" +
+            "Your session has expired!" +
+            "</h2> " +
+            "<hr>" +
+            "<span class = 'margin10'>Please re-login to continue working.</span>", function(){
+              delete $window.localStorage.userInfo;
+              $window.location = "/#/login";
+              notifierOpened = false;
+            });
         }
       }
 
@@ -471,6 +480,7 @@ define([
       $window.addEventListener("storage", function (event) {
         const isUserRemoved = event.key === User.storageKey && !event.newValue,
           isStorageCleared = !event.key && _.isEmpty(event.storageArea);
+
         if (isUserRemoved || isStorageCleared) {
           User.showSignedOutModal();
         }

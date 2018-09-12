@@ -676,7 +676,6 @@ define(['./module', 'angular', /*'latlon-geohash',*/ 'common', 'lodash', 'moment
                         $scope.requestTime = new Date().getTime() - startTime;
                         let data = res.data.data;
                         $scope.previewLimit = res.config.data.limit;
-                        $scope.userExceedRowLimit = res.data.userExceedRowLimit
                         $scope.totalRowsCount = $scope.ingestDataSummary.selectedSources[0].descriptor.rowsCount;
                         $scope.totalSize = data.length;
                         $scope.currentQueryData.cachedPreviewData = res.data.cached;

@@ -47,14 +47,14 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
                 const {_fileUploaderContext, item } = config;
 
                 _fileUploaderContext._onBeforeUploadItem(item);
+
                 const options = {
                     token: item.accessToken,
                     file: item._file,
-                    fileId: item.fileId,
                     contentType: item._file.type,
                     metadata: {
                         title: item.file.name,
-                        mimeType: item._file.type
+                        mimeType: item._file.type,
                     },
                     chunkSize: 1024 * 1024 * 15,
                     onComplete: (response) => {

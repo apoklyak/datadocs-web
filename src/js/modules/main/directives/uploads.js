@@ -264,21 +264,7 @@ define(['./module', 'common', 'notifications-utils', 'lodash'], function (direct
                         checkFilesBeforeUpload(items);
 
                         const {data: filesUploadData} =
-                            await $http.post('/api/files/upload/prepare', {count: _.size(items), fileSize: _.sum(items, function(item) { return item.file.size; })})
-                                .catch(error => {
-                                    if(error.status == 509){
-                                        _.each(items, item => {
-                                            $scope.uploader._onErrorItem(item,
-                                                [{
-                                                    code: error.status,
-                                                    message: `File limit reached`,
-                                                    description: `To upload more than 5GB of files, please upgrade your account`
-                                                }],
-
-                                                400);
-                                        })
-                                    }
-                                });
+                            await $http.post('/api/files/upload/prepare', {count: _.size(items)});
                         items.forEach((item, index) => {
                             const fileUpload = filesUploadData[index];
                             for (let key in fileUpload) {
@@ -519,19 +505,6 @@ define(['./module', 'common', 'notifications-utils', 'lodash'], function (direct
                             item.isCancel = true;
                             item.isUploading = false;
                             item.isSchemaDefining = false;
-                            console.log(error)
-                            if(error.status == 509){
-                                $scope.uploader._onErrorItem(item,
-                                    [{
-                                        code: error.status,
-                                        message: `Datadoc limit reached`,
-                                        description: `To ingest more than 1M rows of data, please upgrade your account`
-                                    }],
-
-                                    error.status)
-                                return;
-                            }
-
                             if(error.data) {
                                 $scope.uploader._onErrorItem(item,
                                     [error.data], error.status,
@@ -553,7 +526,7 @@ define(['./module', 'common', 'notifications-utils', 'lodash'], function (direct
                     $scope.uploader.onErrorItem = function(item, response, status, x){
                         item.isSchemaDefining = false;
                         item.verifying = false;
-                        if(status == 400 || status == 509){
+                        if(status == 400){
                             item.errorCode = response[0].code;
                             item.errorMessage = response[0].message;
                             item.errorDescription = response[0].description;
