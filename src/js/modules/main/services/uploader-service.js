@@ -1,5 +1,5 @@
 define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common, _, googleDriveUpload) => {
-    module.service('UploaderService', ['FileUploader', 'UserStateService', '$localStorage', (FileUploader, UserStateService, $localStorage) => {
+    module.service('UploaderService', ['FileUploader', 'UserStateService', '$localStorage','$http', (FileUploader, UserStateService, $localStorage, $http) => {
         const fileTypes = {
             file: 'file',
             xls: 'excel',
@@ -69,8 +69,34 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
                             _fileUploaderContext._onProgressItem(item, progress)
                         }, 600)
                 };
-                const upload = new googleDriveUpload(options);
 
+                $http.post('/api/files/upload/prepare', {count: 1, fileSize:item.file.size})
+                    .then(response => {
+                        let tokenDetails = response.data;
+                        options.token = tokenDetails[0].accessToken
+                        options.fileId = tokenDetails[0].fileId
+                        item.sessionId = tokenDetails[0].sessionId
+                        uploadFile(item, options)
+
+                 }).catch(error => {
+                    item.isCancel = true;
+                    item.isUploading = false;
+                    item.isSchemaDefining = false;
+                    if(error.status == 509){
+                        _fileUploaderContext._onErrorItem(item,
+                            [{
+                            code: error.status,
+                            message: `File limit reached`,
+                            description: `To upload more than 5GB of files, please upgrade your account`
+                        }],400);
+                    }
+                    return;
+                 });
+            }
+        };
+
+        function uploadFile(item, options, isCancel){
+            const upload = new googleDriveUpload(options);
                 const abort = () => {
                     upload.cancel();
                     _fileUploaderContext._onCancelItem(item, response, status, headers);
@@ -87,8 +113,7 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
 
                 item._customProp = { abort };
 
-            }
-        };
+        }
 
         const defaultUploaderConfig = {
             url: '/api/files/upload',

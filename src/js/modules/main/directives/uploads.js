@@ -263,33 +263,6 @@ define(['./module', 'common', 'notifications-utils', 'lodash'], function (direct
 
                         checkFilesBeforeUpload(items);
 
-                          await $http.post('/api/files/upload/prepare', {count: _.size(items), fileSize: _.sum(items, function(item) {
-                                                                                                                     item.preUpload=true;
-                                                                                                                     return item.file.size; })})
-                                .then(response => {
-                                    let filesUploadData = response.data;
-                                    items.forEach((item, index) => {
-                                       const fileUpload = filesUploadData[index];
-                                       for (let key in fileUpload) {
-                                           item[key] = fileUpload[key];
-                                       }
-                                       item.preUpload = false;
-                                   });
-                                })
-                                .catch(error => {
-                                    if(error.status == 509){
-                                        _.each(items, item => {
-                                            $scope.uploader._onErrorItem(item,
-                                                [{
-                                                    code: error.status,
-                                                    message: `File limit reached`,
-                                                    description: `To upload more than 5GB of files, please upgrade your account`
-                                                }],
-
-                                                400);
-                                        })
-                                    }
-                                });
                     }
                     // For GCS uploader - bulk request for GCS links/filenames before uploading
                     if (UploaderService.isGCSUploader) {
