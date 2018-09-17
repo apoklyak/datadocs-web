@@ -49,8 +49,9 @@ function (controllers, angular, _, KeyJS, cc) {
                         switch (key) {
                             case 'ingestErrorMode':
                             case 'rowXPath':
-                            case 'engineSelectionStrategy':
                                 return false;
+                            case 'engineSelectionStrategy':
+                                return true;
                             default:
                                 return true;
                         }

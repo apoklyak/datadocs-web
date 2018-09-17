@@ -15,7 +15,7 @@
          CLI version 2.0.1
          Local version 3.9.1
         
-2. Make sure datadocs-backend is up and running and listening on `http://localhost:9100`. If you want change the host or port of backend server then you can do so in gulpfile.js file residing in project root. 
+2. Make sure datadocs-backend is up and running and listening on `http://localhost:9100`. If you want change the host or port of backend server then you can do so in gulpfile.js file residing in project root. For example: replace **`http://localhost:9100`** with **`https://dev.datadocs.com`**  
 3. Run `npm install` from project root directory
 4. Run `gulp watch` from project root (i.e. datadocs-web)
 5. As soon as you see `Finished 'watch' after 5.84 μs` message in terminal, Front end should be up and listening on `http://localhost:8283`
