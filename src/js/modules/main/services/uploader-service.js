@@ -76,7 +76,7 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
                         options.token = tokenDetails[0].accessToken
                         options.fileId = tokenDetails[0].fileId
                         item.sessionId = tokenDetails[0].sessionId
-                        uploadFile(item, options)
+                        uploadFile(item, options, _fileUploaderContext)
 
                  }).catch(error => {
                     item.isCancel = true;
@@ -95,7 +95,7 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
             }
         };
 
-        function uploadFile(item, options, isCancel){
+        function uploadFile(item, options, _fileUploaderContext){
             const upload = new googleDriveUpload(options);
                 const abort = () => {
                     upload.cancel();

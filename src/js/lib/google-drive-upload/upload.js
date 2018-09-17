@@ -254,8 +254,23 @@ MediaUploader.prototype.onContentUploadError_ = function(e) {
  * @param {object} e XHR event
  */
 MediaUploader.prototype.onUploadError_ = function(e) {
-    this.onError(e.target.response); // TODO - Retries for initial upload
+    if(e.target.status == 403){
+        console.log('Request quota exceed for uploading file, Retrying after 5 second..')
+        wait(1000);
+        this.retryHandler.retry(this.upload.bind(this));
+    }else{
+        this.onError(e.target.response); // TODO - Retries for initial upload
+    }
+
 };
+
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
 
 /**
  * Construct a query string from a hash/object
