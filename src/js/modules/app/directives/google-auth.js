@@ -22,7 +22,7 @@ define(['./module'], function (directives) {
                                             let onAuthFailureCallBack = function(e) { console.log(e); };
 
                                             var auth2 = gapi.auth2.init({
-                                              client_id: '561897172951-id2q0i2qdjleqh40oso0sglhvfni3l9g.apps.googleusercontent.com',
+                                              client_id: '221124010544-bpf0ernqa026kmdgo45ne0o7op30mvhh.apps.googleusercontent.com',
                                               cookiepolicy: 'single_host_origin',
                                             });
 
