@@ -14,30 +14,35 @@
         <div class="main-page">
 
             <div class="homescreen-container landing-container" ng-cloak>
-                <table>
+                <div class="landing-container__table">
+                    <table>
                     <tbody>
-                        <tr class="landing-container__top">
-                            <td width="35%" class="landing-container__top__left">
-                                <h2 class="landing-container__top__left__title dd--heading">Simplifying data</div>
-                                <div class="landing-container__top__left__text dd--body1">Datadocs allows individuals and organizations to work with data of any size with the ease of use of Excel and the collaborative possibilities of Google Docs.</div>
-                                <button class="create-doc blue spacing-top get-started-btn"
-                                        uib-tooltip="Click to start"
-                                        tooltip-placement="top"
-                                        tooltip-popup-delay="250"
-                                        tooltip-append-to-body="true"
-                                        tooltip-class="main-page-tooltip">
-                                    <span class="get-started-btn__text">
-                                        Get Started
-                                    </span>
-                                </button>
+                        <tr class="landing-container__table__top">
+                            <td width="35%" class="landing-container__table__top__left">
+                                <h2 class="landing-container__table__top__left__title dd--heading">Simplifying data</h2>
+                                <div class="landing-container__table__left__text dd--body1">Datadocs allows individuals and organizations to work with data of any size with the ease of use of Excel and the collaborative possibilities of Google Docs.</div>
+                                <a ui-sref="auth.register">
+                                    <button class="create-doc blue spacing-top get-started-btn"
+                                            uib-tooltip="Click to start"
+                                            tooltip-placement="top"
+                                            tooltip-popup-delay="250"
+                                            tooltip-append-to-body="true"
+                                            tooltip-class="main-page-tooltip">
+                                        <span class="get-started-btn__text">
+                                            Get Started
+                                        </span>
+                                    </button>
+                                </a>
                             </td>
-                            <td width="65%" class="landing-container__top__right">
-                                <iframe width="560" height="315" src="https://www.youtube.com/embed/6XdGtqBJFrw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="landing-container__top__right__video"></iframe>
+                            <td width="65%" class="landing-container__table__top__right">
+                                <div class="landing-container__table__top__right__video">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/6XdGtqBJFrw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen class="landing-container__table__top__right__video__iframe"></iframe>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
+                </div>
                 <div class="landing-container__bottom"></div>
 
                 <footer class="footer">

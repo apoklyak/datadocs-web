@@ -69,7 +69,7 @@ define(['./module', 'common', 'lodash', 'google-drive-upload'], (module, common,
                             _fileUploaderContext._onProgressItem(item, progress)
                         }, 600)
                 };
-
+                let { response, status, headers } = [];
                 $http.post('/api/files/upload/prepare', {count: 1, fileSize:item.file.size})
                     .then(response => {
                         let tokenDetails = response.data;
