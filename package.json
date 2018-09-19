@@ -9,6 +9,7 @@
     "gulp-clean": "^0.3.2",
     "gulp-concat-css": "^2.2.0",
     "gulp-exec": "^2.1.2",
+    "gulp-notify": "^3.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sync": "^0.1.4",
     "r.js": "^1.0.3",

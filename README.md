@@ -158,3 +158,48 @@ Development in action
 8. Hit URL http(s):<SERVER_HOST>:<PORT>:/. You're good if shows login page with correct CSS.
 
 9. Ensure to have API server up and running on API_SERVER_IP:API_SERVER_PORT in order to have features working
+
+#Steps for setup frontend project on OSX:
+
+## prerequisite
+1. Docker and docker-compose should be installed in machine.
+2. Assuming that datadocs-backend should be listening on `http://<host-IP>:9100` URL.
+
+##Steps
+1. Go to the datadocs-web directory.
+2. Replace `http://localhost:9100` by `http://<host-IP>:9100` in gulpfile.js file.
+3. execute `docker-compose up webserver`.
+4. As soon as you see `READY -- TEST IT ON LOCALHOST:8283` message in terminal, Front end should be up and listening on `http://localhost:8283`
+5. Hit http://localhost:8283 in browser. You are all set if you see login page with appropriate style.
+6. You can make changes in the templates/css/js files inside src
+7. In couple of seconds, you should be able to refresh the browser and see the change. 
+
+#Steps for setup frontend project on Windows:
+
+## prerequisite
+
+1. Docker and docker-compose should be installed in windows machine.
+2. If not installed, follow the steps from [Install Docker Toolbox on Windows](https://docs.docker.com/toolbox/toolbox_install_windows/).
+3. Assuming that datadocs-backend should be listening on `http://<host-IP>:9100` URL.
+
+##Steps
+
+1. Add port forwarding rule to expose `8283` from docker machine to host machine. Follow below steps.
+
+        1. Go to VirtualBox -> Your BOX -> Settings -> Network ->
+        2. Choose NAT
+        3. Open Advanced
+        4. Click Port Forwarding
+        5. Add new rule to map `8283` port you need from host to guest
+        6. Click OK to save the changes.
+        7. Then stop the virtual box.(Right click on virtual nox -> Close -> Power Off)
+        8. Start Docker Quikstart Terminal
+        
+2. Ensure that the frontend directory should be inside the same directory where docker is installed. (default- C://User/username)
+3. Go to the datadocs-web directory.
+4. Replace `http://localhost:9100` by `http://<host-IP>:9100` in gulpfile.js file.
+5. execute `docker-compose up webserver`.
+6. As soon as you see `READY -- TEST IT ON LOCALHOST:8283` message in terminal, Front end should be up and listening on `http://localhost:8283`
+7. Hit http://localhost:8283 in browser. You are all set if you see login page with appropriate style.
+8. You can make changes in the templates/css/js files inside src
+9. In couple of seconds, you should be able to refresh the browser and see the change.

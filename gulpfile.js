@@ -19,6 +19,7 @@ const modRewrite = require('connect-modrewrite');
 const proxy = require('http-proxy-middleware');
 const watch = require('gulp-watch');
 const browserSync = require('browser-sync').create();
+const gp_notify = require('gulp-notify');
 var reload      = browserSync.reload;
 
 
@@ -276,10 +277,12 @@ gulp.task('server', function() {
 });
 
 gulp.task('watch-and-reload', ['update-build'], function() {
-  watch(['src/**'], function() {
+  watch(['src/**'], {interval: 1000, usePolling: true} , function() {
     gulp.start('update-build');
   })
   .pipe(connect.reload()).pipe(reload({stream: true}));
 });
 
-gulp.task('watch', ['update-build', 'watch-and-reload', 'server']);
+gulp.task('watch', ['update-build', 'watch-and-reload', 'server'], function(){
+    gp_notify("READY -- TEST IT ON LOCALHOST:8283").write('');
+});

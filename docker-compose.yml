@@ -12,3 +12,13 @@ services:
     environment:
       SERVER_NAME: "dev.datadocs.com"
       PROXY_URL_PORT: "http://10.138.0.7:9100"
+  webserver:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: webserver
+    ports:
+      - "8283:8283"
+    volumes:
+      - $PWD/src:/datadocs-web/src
+
