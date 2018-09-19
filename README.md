@@ -203,3 +203,23 @@ Development in action
 7. Hit http://localhost:8283 in browser. You are all set if you see login page with appropriate style.
 8. You can make changes in the templates/css/js files inside src
 9. In couple of seconds, you should be able to refresh the browser and see the change.
+
+# Connect dev server from local datadocs-frontend.
+
+1. Replace proxy settings in gulpfile.js -> server task -> middleware 
+
+        proxy('/api', {
+          target: 'https://dev.datadocs.com',
+          changeOrigin: true
+        }),
+         proxy('/share', {
+          target: 'https://dev.datadocs.com',
+          changeOrigin: true
+        }),
+        proxy('/websocket', {
+          target: 'https://dev.datadocs.com',
+          changeOrigin:true,
+          ws: true      // <-- set it to 'true' to proxy WebSockets
+        })
+2. Remove docker container for webserver using `docker rmi -f datadocs-web_webserver` 
+3. Start again using `docker-compose up webserver`.
