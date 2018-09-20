@@ -24,12 +24,14 @@ var reload      = browserSync.reload;
 
 
 // Specify whether the backend exists locally (localhost:9100) or remote (dev.datadocs.com)
-var USE_REMOTE_BACKEND = true;
+var USE_REMOTE_BACKEND = false;
 
 if (USE_REMOTE_BACKEND) {
+    var changeOrigin = true;
 	var WEB_URL = "https://dev.datadocs.com";
 	var SOCKET_URL = "https://dev.datadocs.com";
 } else {
+    var changeOrigin = false;
 	var WEB_URL = "http://localhost:9100";
 	var SOCKET_URL = "ws://localhost:9100";
 }
@@ -275,11 +277,11 @@ gulp.task('server', function() {
         ]),
         proxy('/api', {
           target: WEB_URL,
-          changeOrigin: false
+          changeOrigin: changeOrigin
         }),
          proxy('/share', {
           target: WEB_URL,
-          changeOrigin: false
+          changeOrigin: changeOrigin
         }),
         proxy('/websocket', {
           target: SOCKET_URL,
