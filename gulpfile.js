@@ -23,6 +23,17 @@ const gp_notify = require('gulp-notify');
 var reload      = browserSync.reload;
 
 
+// Specify whether the backend exists locally (localhost:9100) or remote (dev.datadocs.com)
+var USE_REMOTE_BACKEND = true;
+
+if (USE_REMOTE_BACKEND) {
+	var WEB_URL = "https://dev.datadocs.com";
+	var SOCKET_URL = "https://dev.datadocs.com";
+} else {
+	var WEB_URL = "http://localhost:9100";
+	var SOCKET_URL = "ws://localhost:9100";
+}
+
 const assetsPath = "./src/";
 
 let watching = false;
@@ -41,6 +52,10 @@ function changeCssPath(content){
 
 function setCacheTime(content){
   return content.replace(/%timestamp%/g, Math.round(new Date().getTime() / 1000));
+}
+
+function repeat(str, times) {
+    return new Array(times + 1).join(str);
 }
 
 function setDeploymentInfo(content, done){
@@ -259,15 +274,15 @@ gulp.task('server', function() {
           '^/(.*)$ /$1 [L]',
         ]),
         proxy('/api', {
-          target: 'http://localhost:9100',
+          target: WEB_URL,
           changeOrigin: false
         }),
          proxy('/share', {
-          target: 'http://localhost:9100',
+          target: WEB_URL,
           changeOrigin: false
         }),
         proxy('/websocket', {
-          target: 'ws://localhost:9100',
+          target: SOCKET_URL,
           changeOrigin:true,
           ws: true      // <-- set it to 'true' to proxy WebSockets
         })
@@ -284,5 +299,13 @@ gulp.task('watch-and-reload', ['update-build'], function() {
 });
 
 gulp.task('watch', ['update-build', 'watch-and-reload', 'server'], function(){
-    gp_notify("READY -- TEST IT ON LOCALHOST:8283").write('');
+    gp_notify("\n\n\n"
+			  + repeat('************************************************\n', 3) 
+			  + "WEBSERVER IS READY!\n"
+			  + "Go to http://localhost:8283\n"
+			  + "(Backend configured at " + WEB_URL + ")\n"
+			  + repeat('************************************************\n', 3) 
+			  + "\n\n\n"
+		    ).write('');
 });
+
