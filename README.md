@@ -174,7 +174,7 @@ Development in action
 6. You can make changes in the templates/css/js files inside src
 7. In couple of seconds, you should be able to refresh the browser and see the change. 
 
-#Steps for setup frontend project on Windows:
+# Steps for setup frontend project on Windows:
 
 ## prerequisite
 
@@ -182,7 +182,7 @@ Development in action
 2. If not installed, follow the steps from [Install Docker Toolbox on Windows](https://docs.docker.com/toolbox/toolbox_install_windows/).
 3. Assuming that datadocs-backend should be listening on `http://<host-IP>:9100` URL.
 
-##Steps
+## Steps
 
 1. Add port forwarding rule to expose `8283` from docker machine to host machine. Follow below steps.
 
