@@ -489,7 +489,16 @@ define([
 
         if(authRequired && !User.isSignedIn()){
           event.preventDefault();
-          window.location.href = "/welcome"
+           $rootScope.nextPageAfterLogin = {
+              name: toState.name,
+              params: toParams
+            };
+            $timeout(function() {
+              // transform object to string like this: key1:val1:key2:val2
+              const param = _.flatten(_.compact(_.map(toParams, (val, key) => val ? [key, val] : null))).join(":");
+              $state.go('auth.login', {state: toState.name, param});
+              $rootScope.$broadcast('$stateChangeSuccess', fromState);
+            });
         } else if (User.isSignedIn() && !User.hasFinishedSubscription() && authRequired) {
            $timeout(function() {
              $state.go('auth.billing');
