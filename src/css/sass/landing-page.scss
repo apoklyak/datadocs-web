@@ -175,7 +175,7 @@
 body {
   position: relative;
   #page-content-wrapper {
-    height: 100vh;
+    height: calc(100vh - 70px);
     position: static;
 
     .landing-page {

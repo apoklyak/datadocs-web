@@ -489,7 +489,7 @@ define([
 
         if(authRequired && !User.isSignedIn()){
           event.preventDefault();
-          window.location.href = "/landing_page"
+          window.location.href = "/welcome"
         } else if (User.isSignedIn() && !User.hasFinishedSubscription() && authRequired) {
            $timeout(function() {
              $state.go('auth.billing');
