@@ -242,11 +242,6 @@ define([
             ]
           }
         })
-        .state('main.landing_page', {
-          url: 'landing-page',
-          templateUrl: '/static/templates/main/landing_page.html',
-          controller: 'myLandingPageCtrl'
-        })
         .state('main.landing', {
           abstract: true,
           controller: 'uploadsCtrl',
@@ -494,16 +489,7 @@ define([
 
         if(authRequired && !User.isSignedIn()){
           event.preventDefault();
-          $rootScope.nextPageAfterLogin = {
-            name: toState.name,
-            params: toParams
-          };
-          $timeout(function() {
-            // transform object to string like this: key1:val1:key2:val2
-            const param = _.flatten(_.compact(_.map(toParams, (val, key) => val ? [key, val] : null))).join(":");
-            $state.go('auth.login', {state: toState.name, param});
-            $rootScope.$broadcast('$stateChangeSuccess', fromState);
-          });
+          window.location.href = "/landing_page"
         } else if (User.isSignedIn() && !User.hasFinishedSubscription() && authRequired) {
            $timeout(function() {
              $state.go('auth.billing');

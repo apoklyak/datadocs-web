@@ -21,7 +21,6 @@ define([
     './changeEmailCtrl',
     './closeAccountCtrl',
     './billingHistoryCtrl',
-    './myLandingPageCtrl',
     './termsCtrl',
     './policyCtrl'
 ], function () {});

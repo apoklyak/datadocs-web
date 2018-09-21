@@ -223,3 +223,11 @@ Development in action
         })
 2. Remove docker container for webserver using `docker rmi -f datadocs-web_webserver` 
 3. Start again using `docker-compose up webserver`.
+
+# Setup Drift.
+
+1. Create an account in [Drift](https://app.drift.com).
+2. Open the Dashboard of the drift.
+3. JavaScript snippet can be found in Settings > Chat Widget > Install. [Drift Widget](https://app.drift.com/settings/widget)
+4. Copy the javascript code and replace into landing_page.html from `<!-- Start of Async Drift Code -->` to the `<!-- End of Async Drift Code -->`.
+5. Push the changes and redeploy frontend.
