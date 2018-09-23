@@ -20,20 +20,26 @@ const proxy = require('http-proxy-middleware');
 const watch = require('gulp-watch');
 const browserSync = require('browser-sync').create();
 const gp_notify = require('gulp-notify');
+const os = require('os');
 var reload      = browserSync.reload;
 
 
 // Specify whether the backend exists locally (localhost:9100) or remote (dev.datadocs.com)
-var USE_REMOTE_BACKEND = false;
+var hostsForLocalConnections = ["changeme1", "changeme2"]
+if (os.hostname() in hostsForLocalConnections) {
+	USE_REMOTE_BACKEND = false;
+} else {
+	USE_REMOTE_BACKEND = true;
+}
 
 if (USE_REMOTE_BACKEND) {
     var changeOrigin = true;
-	var WEB_URL = "https://dev.datadocs.com";
-	var SOCKET_URL = "https://dev.datadocs.com";
+	var WebURL = "https://dev.datadocs.com";
+	var SocketURL = "https://dev.datadocs.com";
 } else {
     var changeOrigin = false;
-	var WEB_URL = "http://localhost:9100";
-	var SOCKET_URL = "ws://localhost:9100";
+	var WebURL = "http://localhost:9100";
+	var SocketURL = "ws://localhost:9100";
 }
 
 const assetsPath = "./src/";
@@ -276,15 +282,15 @@ gulp.task('server', function() {
           '^/(.*)$ /$1 [L]',
         ]),
         proxy('/api', {
-          target: WEB_URL,
+          target: WebURL,
           changeOrigin: changeOrigin
         }),
          proxy('/share', {
-          target: WEB_URL,
+          target: WebURL,
           changeOrigin: changeOrigin
         }),
         proxy('/websocket', {
-          target: SOCKET_URL,
+          target: SocketURL,
           changeOrigin:true,
           ws: true      // <-- set it to 'true' to proxy WebSockets
         })
@@ -305,7 +311,7 @@ gulp.task('watch', ['update-build', 'watch-and-reload', 'server'], function(){
 			  + repeat('************************************************\n', 3) 
 			  + "WEBSERVER IS READY!\n"
 			  + "Go to http://localhost:8283\n"
-			  + "(Backend configured at " + WEB_URL + ")\n"
+			  + "(Backend configured at " + WebURL + ")\n"
 			  + repeat('************************************************\n', 3) 
 			  + "\n\n\n"
 		    ).write('');
