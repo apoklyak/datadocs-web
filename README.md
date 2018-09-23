@@ -16,3 +16,4 @@
     
 *Note: if for whatever reason, you need to change the gulpfile and re-run the docker container, you can delete the docker container by running `docker rmi -f datadocs-web_webserver` and re-running `docker-compose up webserver`.*
     
+*Note for Windows users: You will need to add a port forwarding rule to expose `8283` from the docker machine to the host machine. (This can be done by going to VirtualBox -> Your BOX -> Settings -> Network -> NAT > Advanced and adding the Port Forwarding rule).*
