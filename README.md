@@ -14,3 +14,5 @@
     
     `docker-compose up webserver`
     
+*Note: if, for whatever reason, you need to change the gulpfile and re-run the docker container, you can delete the docker container by running `docker rmi -f datadocs-web_webserver` and re-running `docker-compose up webserver`.*
+    
