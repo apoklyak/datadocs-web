@@ -5,12 +5,12 @@
 
 2. Clone the git project to your local machine: 
     
-    `git clone https://github.com/david542542/datadocs-web-freeze`
+    `git clone https://github.com/david542542/datadocs-web`
 
 
 3. Move into the project directory and run docker-compose:
 
-    `cd datadocs-web-freeze`
+    `cd datadocs-web`
     
     `docker-compose up webserver`
     
