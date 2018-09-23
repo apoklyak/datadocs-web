@@ -1,4 +1,4 @@
-# Instructions for local/development environment
+# Instructions for Local Development
 
 1. Install [Docker](https://docs.docker.com/install/) on your local machine and make sure you can run `docker-compose` via the command line.
 
