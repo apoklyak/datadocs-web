@@ -25,21 +25,23 @@ var reload      = browserSync.reload;
 
 
 // Specify whether the backend exists locally (localhost:9100) or remote (dev.datadocs.com)
-var hostsForLocalConnections = ["changeme1", "changeme2"]
-if (os.hostname() in hostsForLocalConnections) {
-	USE_REMOTE_BACKEND = false;
+var hostsToUseLocalJavaBackend = ["LA-DEV-IM-MMx", "add-your-hostname-here"]
+
+if (hostsToUseLocalJavaBackend.indexOf(os.hostname()) != -1) {
+	useLocalJavaBackend = true;
 } else {
-	USE_REMOTE_BACKEND = true;
+	useLocalJavaBackend = false;
 }
 
-if (USE_REMOTE_BACKEND) {
-    var changeOrigin = true;
-	var WebURL = "https://dev.datadocs.com";
-	var SocketURL = "https://dev.datadocs.com";
-} else {
+
+if (useLocalJavaBackend) {
     var changeOrigin = false;
 	var WebURL = "http://localhost:9100";
 	var SocketURL = "ws://localhost:9100";
+} else {
+    var changeOrigin = true;
+	var WebURL = "https://dev.datadocs.com";
+	var SocketURL = "https://dev.datadocs.com";
 }
 
 const assetsPath = "./src/";
