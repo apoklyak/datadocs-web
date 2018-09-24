@@ -1,5 +1,5 @@
 define(['./module', 'jquery', 'lodash', 'moment'], function (module, $, _, moment) {
-  module.factory('User', ['$http', '$window', '$q', '$rootScope', '$uibModal','Account', function ($http, $window, $q, $rootScope, $uibModal, Account) {
+  module.factory('User', ['$http', '$window', '$q', '$rootScope', '$uibModal','$localStorage','Account', function ($http, $window, $q, $rootScope, $uibModal, $localStorage, Account) {
 
     let UserModel = {},
       networkModal,
@@ -79,6 +79,7 @@ define(['./module', 'jquery', 'lodash', 'moment'], function (module, $, _, momen
     }
 
     $rootScope.forceRefreshPage = () => {
+      $localStorage['userSessionTimeout'] = true;
       $window.location.reload();
     };
 
@@ -181,6 +182,7 @@ define(['./module', 'jquery', 'lodash', 'moment'], function (module, $, _, momen
 
       signOut: function () {
         clearFromSession();
+        $localStorage['userSessionTimeout'] = true;
         return $http({
           method: 'POST',
           url: '/api/auth/logout'
@@ -286,6 +288,10 @@ define(['./module', 'jquery', 'lodash', 'moment'], function (module, $, _, momen
 
       isSignedIn: function () {
         return UserModel ? UserModel.id : undefined;
+      },
+
+      isUserSessionTimeout: function () {
+          return ( $localStorage['userSessionTimeout'] && $localStorage['userSessionTimeout'] != null) ? $localStorage['userSessionTimeout'] : false;
       },
 
       getCurrent: function () {
