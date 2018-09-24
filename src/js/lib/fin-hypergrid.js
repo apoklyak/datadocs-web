@@ -9670,16 +9670,15 @@ exports.mixin = {
                 this.cellEditor.scrollValueChangedNotification();
             }
 
-            // if (this.properties.onScrollEndLimitTrigger > 0 && this.sbVScroller.range.max - this.vScrollValue < this.properties.onScrollEndLimitTrigger) {
-            //     // datadoc infinite scroll
-            //     if (this.api.datasource && !this.scrollTriggered) {
-            //         this.api.setDatasource(this.api.datasource);
-            //     }
-            //
-            //     this.scrollTriggered = true;
-            // } else {
-            //     this.scrollTriggered = false;
-            // }
+             if (this.properties.onScrollEndLimitTrigger > 0 && this.sbVScroller.range.max - this.vScrollValue < this.properties.onScrollEndLimitTrigger) {
+                 // datadoc infinite scroll
+                 if (this.api.datasource && !this.scrollTriggered) {
+                     this.api.setDatasource(this.api.datasource);
+                 }
+                 this.scrollTriggered = true;
+             } else {
+                 this.scrollTriggered = false;
+             }
 
             this.computeCellsBounds();
         }
@@ -17674,7 +17673,7 @@ var defaults = {
    * @type {number}
    * @memberOf module:defaults
    */
-  onScrollEndLimitTrigger: -1,
+  onScrollEndLimitTrigger: 1,
 
   /**
    * Horizontal alignment of each cell as interpreted by it's cell renderer.

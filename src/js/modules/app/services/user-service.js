@@ -182,7 +182,6 @@ define(['./module', 'jquery', 'lodash', 'moment'], function (module, $, _, momen
 
       signOut: function () {
         clearFromSession();
-        $localStorage['userSessionTimeout'] = true;
         return $http({
           method: 'POST',
           url: '/api/auth/logout'
