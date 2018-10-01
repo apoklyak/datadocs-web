@@ -318,6 +318,7 @@ define(['./module', 'angular', /*'latlon-geohash',*/ 'common', 'lodash', 'moment
                             }
                         },
                         getMainMenuItems: function(params) {
+                            console.log('in preview mode, get main menu items.')
                             let selectedCols = $scope.previewGridOptions.api.getSelectedColumns();
                             if (!selectedCols || selectedCols.length === 0) {
                                 selectedCols = [params.column]; // because of rightclick feature selectedCols can be empty at the time of drawing menu
@@ -558,7 +559,8 @@ define(['./module', 'angular', /*'latlon-geohash',*/ 'common', 'lodash', 'moment
                         maxWidth: 2000,
                         suppressMenu: c.blank,
                         cellRenderer: getCustomCellRenderer($scope),
-                        halign: align
+                        halign: align,
+                        menuTabs: ["filterMenuTab", "generalMenuTab", "columnsMenuTab"]
                     }
 
                 }

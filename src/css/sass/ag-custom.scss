@@ -569,6 +569,11 @@
     cursor: default;
     font-size: 14px;
     z-index: 2;
+    min-height: 270px !important;
+    min-width:260px !important;
+    flex-direction:column !important;
+    padding-left:8px !important;
+    padding-right:8px !important;
     margin-top: 25px;
     #tabHeader {
       display: none;
@@ -625,9 +630,21 @@
       flex-direction: column;
       margin-top: -1px;
     }
-
+    .ag-info-option{
+        height:18px !important;
+        flex-direction:column;
+        .ag-menu-info-text{
+            text-align:right;
+            font-size:9px;
+            font-style:italic;
+            width:100%;
+            color:#bbb;
+            height:10px;
+        }
+      }
     .ag-menu-option {
       height: 27px;
+      flex-direction: column;
       font-size: 13px;
       cursor: pointer;
       display: flex;
@@ -635,6 +652,23 @@
       > span {
         padding-top: 8px;
         padding-bottom: 8px;
+      }
+      .ag-menu-input-text{
+        width:100%;
+        div{
+            position:relative;
+            i{
+                position:absolute;
+                top:5px;
+                right:5px;
+            }
+            input{
+                width:100%;
+                padding: 3px 5px;
+                border: 1px solid rgb(204, 204, 204);
+                border-left: 0;
+            }
+        }
       }
       .hl {
         padding: 2px 0;
@@ -653,10 +687,22 @@
     }
 
     .ag-menu-option-text {
+      width:100%;
       padding: 2px 4px 2px 4px;
       vertical-align: middle;
       flex-grow: 1;
-
+      .list-dropdown{
+        max-height:100px;
+        max-width: 260px;
+        overflow:auto;
+        ul{
+            list-style:none;
+            padding-left:0;
+            input{
+                margin-right:5px;
+            }
+        }
+      }
       .split-character {
         vertical-align: middle;
         display: inline-block;

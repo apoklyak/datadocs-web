@@ -6621,6 +6621,7 @@ var mixin = {
                 return;
             }
             handleMouseEvent(e, function (mouseEvent) {
+//                console.log('handle mouse event..')
                 mouseEvent.keys = e.detail.keys; // todo: this was in fin-tap but wasn't here
                 this.fireSyntheticClickEvent(mouseEvent);
                 this.delegateClick(mouseEvent);
@@ -11674,6 +11675,7 @@ var Behavior = Base.extend('Behavior', {
      */
     onClick: function onClick(grid, event) {
         if (this.featureChain) {
+//            console.log('on click fn...')
             this.featureChain.handleClick(grid, event);
             this.setCursor(grid);
         }
@@ -17756,7 +17758,7 @@ var defaults = {
   /**
    * @summary showCellContextMenuIcon and showColumnType trigger
    */
-  showAdditionalInfo: false,
+  showAdditionalInfo: true,
 
   /**
    * Set to `true` to render `0` and `false`. Otherwise these value appear as blank cells.
@@ -19696,6 +19698,7 @@ var CellClick = Feature.extend('CellClick', {
      * @memberOf CellClick#
      */
     handleClick: function handleClick(grid, event) {
+//        console.log('handle click event grid..')
         grid.log('event', event);
         var consumed = false;
         if (event.isAggregationColumn && this._isMouseOverExpandIcon(grid, event) && event.isExpandableRow) {
@@ -22407,7 +22410,7 @@ var ContextMenu = Feature.extend('ContextMenu', {
             var rightToLeft = event.primitiveEvent.detail.mouse.x + 200 >= window.innerWidth;
             var startX = rightToLeft ? contextMenuIconRightX : contextMenuIconLeftX;
             startX += grid.canvas.size.left;
-
+//            console.log("Inside handle click..");
             this.paintContextMenu(menuDiv, grid, event, contextMenu, startX, event.bounds.y + event.bounds.height + grid.canvas.size.top, rightToLeft);
         }
 
@@ -22464,6 +22467,7 @@ var ContextMenu = Feature.extend('ContextMenu', {
         }
 
         var rightToLeft = event.primitiveEvent.detail.mouse.x + 200 >= window.innerWidth;
+//        console.log("handle context menu...")
         this.paintContextMenu(menuDiv, grid, event, contextMenu, event.primitiveEvent.detail.mouse.x + grid.canvas.size.left, event.primitiveEvent.detail.mouse.y + grid.canvas.size.top + 25, rightToLeft);
         if (this.next) {
             this.next.handleContextMenu(grid, event);
@@ -22611,6 +22615,12 @@ var ContextMenu = Feature.extend('ContextMenu', {
      * @param {object} item - menu item object
      */
     makeContextMenuItem: function makeContextMenuItem(grid, event, menuHolderDiv, menuListHolderDiv, item) {
+//        console.log('Now preparing context menu..')
+//        console.log(grid)
+//        console.log(event)
+//        console.log(menuHolderDiv)
+//        console.log(menuListHolderDiv)
+//        console.log(item)
         if (item.hasOwnProperty('isShown')) {
             if (typeof item.isShown === 'function' && !item.isShown(event)) {
                 return;
@@ -22624,22 +22634,45 @@ var ContextMenu = Feature.extend('ContextMenu', {
         var menuOption = document.createElement('div');
         menuOption.style.display = 'block';
 
-        menuOption.setAttribute('class', 'ag-menu-option');
+        if(item.type == 'info'){
+            menuOption.setAttribute('class', 'ag-info-option');
+        }else{
+            menuOption.setAttribute('class', 'ag-menu-option');
+        }
 
         if ((typeof item === 'undefined' ? 'undefined' : _typeof(item)) === 'object') {
             var menuOptionIconSpan = document.createElement('span');
             menuOptionIconSpan.setAttribute('class', 'ag-menu-option-icon');
             menuOptionIconSpan.setAttribute('id', 'eIcon');
-            menuOption.appendChild(menuOptionIconSpan);
+//            menuOption.appendChild(menuOptionIconSpan);
             if (item.icon) {
                 menuOptionIconSpan.innerHTML = item.icon;
             }
 
             var menuOptionNameSpan = document.createElement('span');
-            menuOptionNameSpan.setAttribute('class', 'ag-menu-option-text');
-            menuOptionNameSpan.setAttribute('id', 'eName');
-            menuOptionNameSpan.innerHTML = item.title || item.name;
-            menuOption.appendChild(menuOptionNameSpan);
+            if(item.type == 'input'){
+                menuOptionNameSpan.setAttribute('class', 'ag-menu-input-text');
+                menuOptionNameSpan.setAttribute('id', 'eName');
+                menuOptionNameSpan.innerHTML = item.title || item.name;
+                menuOption.appendChild(menuOptionNameSpan);
+            }else if(item.type == 'multiValue'){
+                menuOptionNameSpan.setAttribute('class', 'ag-menu-option-text');
+                menuOptionNameSpan.setAttribute('id', 'eName');
+                menuOptionNameSpan.innerHTML = item.title || item.name;
+                menuOption.appendChild(menuOptionNameSpan);
+            }else if(item.type == 'info'){
+                menuOptionNameSpan.setAttribute('class', 'ag-menu-info-text');
+                menuOptionNameSpan.setAttribute('id', 'eName');
+                menuOptionNameSpan.innerHTML = item.title || item.name;
+                menuOption.appendChild(menuOptionNameSpan);
+            }
+            else{
+                menuOptionNameSpan.setAttribute('class', 'ag-menu-option-text');
+                menuOptionNameSpan.setAttribute('id', 'eName');
+                menuOptionNameSpan.innerHTML = item.title || item.name;
+                menuOption.appendChild(menuOptionNameSpan);
+            }
+
 
             var menuOptionShortcutSpan = document.createElement('span');
             menuOptionShortcutSpan.setAttribute('class', 'context-menu-option-shortcut');
@@ -22655,15 +22688,40 @@ var ContextMenu = Feature.extend('ContextMenu', {
             }
 
             menuOption.appendChild(menuOptionPopupPointerSpan);
+            if(!item.header){
+                menuOption.addEventListener('click', function (clickEvent) {
+                    if (item.action) {
+                        grid.menuClick = true;
+                        item.action(clickEvent, event);
+                        delete grid.menuClick;
+                    }
+                    self.hideContextMenu(menuDiv);
+                });
+            }
 
-            menuOption.addEventListener('click', function (clickEvent) {
-                if (item.action) {
-                    grid.menuClick = true;
-                    item.action(clickEvent, event);
-                    delete grid.menuClick;
-                }
-                self.hideContextMenu(menuDiv);
-            });
+            if(item.type == 'input'){
+                menuOption.addEventListener('input', function (inputEvent) {
+                    if (item.action) {
+                        //grid.menuClick = true;
+                        item.action(inputEvent, event);
+                        //delete grid.menuClick;
+                    }
+//                    self.hideContextMenu(menuDiv);
+                });
+            }
+
+            if(item.type == 'multiValue'){
+                console.log('Multi value is')
+                console.log(menuOption)
+            }
+
+            $('#filterList').change(function () {
+                alert('changed');
+             });
+            function doalert(e){
+                console.log('do alert called')
+                console.log(e)
+            }
 
             if (grid.properties.applyContextMenuStyling) {
                 if (grid.properties.contextMenuListOptionStyle) {
@@ -22687,6 +22745,7 @@ var ContextMenu = Feature.extend('ContextMenu', {
                 }
             }
 
+        if(!item.header){
             menuOption.addEventListener('mouseenter', function (event) {
                 self.closeAllChilds(menuHolderDiv);
                 if (item.childMenu && item.childMenu.length && !item.childMenuDiv) {
@@ -22721,6 +22780,7 @@ var ContextMenu = Feature.extend('ContextMenu', {
                     item.childMenuDiv = null;
                 }
             });
+            }
         } else if (item === 'separator') {
             menuOption.className = 'ag-menu-separator';
 
@@ -23059,6 +23119,7 @@ var Feature = Base.extend('Feature', {
      * @comment Not really private but was cluttering up all the feature doc pages.
      */
     handleClick: function handleClick(grid, event) {
+//        console.log('handle click....')
         if (this.next) {
             this.next.handleClick(grid, event);
         }
@@ -23244,6 +23305,7 @@ var Filters = Feature.extend('Filters', {
         if (event.isFilterCell) {
             grid.onEditorActivate(event);
         } else if (this.next) {
+//            console.log('handle click 11')
             this.next.handleClick(grid, event);
         }
     }

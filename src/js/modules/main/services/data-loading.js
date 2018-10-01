@@ -875,59 +875,74 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                         },
                         getMainMenuItems: function(params) {
                             var selectedColumns = $scope.gridOptions.api.getSelectedColumns();
+                            let availableData = params.column.dataModel.data.map(a => a[params.column.schema.name])
+                            let cachedFilterValue = _.get($scope, 'cachedFilterValue.'+params.value)
+                            let liList = cachedFilterValue.map(value => {
+                                if(availableData.indexOf(value) > -1){
+                                    return "<li><input type=\"checkbox\" checked>"+value+"</li>"
+                                }else{
+                                    return "<li><input type=\"checkbox\" id=\"filterList\">"+value+"</li>"
+                                }
+
+                            }).reduce(function(v1, v2){return v1 + v2})
+                            let ulList = "<div class=\"list-dropdown\"><ul>"+liList+"</ul></div>"
                             var menuItems = [];
 
-                            if (!$scope.isViewOnly) {
-                                if (selectedColumns.length < 2) {
-                                    menuItems.push({
-                                        name: 'Rename',
-                                        action: function(clickEvent, cellEvent) {
-                                            console.log('rename selected', clickEvent, cellEvent);
-                                            cellEvent.grid.onEditorActivate(cellEvent);
-                                        }
-                                    })
-                                }
+                            menuItems.push({
+                                name: `<b>Sort</b>`,
+                                header: true
+                            })
+                            menuItems.push({
+                                name: 'Sort A -> Z',
+                                action: function(clickEvent, cellEvent) {
+                                    console.log('Ascending sort selected', clickEvent, cellEvent);
+                                    $scope.sortColumn = cellEvent.column.schema.name;
+                                    $scope.sortOrder = "asc";
+                                    setDatasource($scope);
+                                },
+                                header: false
+                             })
 
-                                menuItems = menuItems.concat([{
-                                    name: 'Remove',
-                                    action: function(clickEvent, cellEvent) {
-                                        console.log('remove selected', clickEvent, cellEvent);
+                             menuItems.push({
+                                 name: 'Sort Z -> A',
+                                 action: function(clickEvent, cellEvent) {
+                                     console.log('Descending sort selected', clickEvent, cellEvent);
+                                     $scope.sortColumn = cellEvent.column.schema.name;
+                                     $scope.sortOrder = "desc";
+                                     setDatasource($scope);
+                                 },
+                                 header: false
+                              })
+                              menuItems.push('separator')
 
-                                        const grid = cellEvent.grid;
-                                        const colDef = grid.columnDefs;
 
-                                        selectedColumns.forEach((column) => {
-                                            const removed = _.remove($scope.dataSummary.shows, { key: column.name });
-                                            _.each(removed, ({ id }) => {
-                                                BookmarkEventService.emit(".shows.ShowRemoveEvent", { key: id }, $scope)
-                                            });
+                            menuItems.push({
+                              name: `<b>Filter</b>`,
+                              header: true
+                            })
 
-                                            $timeout(function() {
-                                                $scope.$emit('DoRebuildCollapsedTags');
-                                            });
+                            menuItems.push({
+                              name: `<div><input type='text' placeholder=\"Search\"><i class="fa fa-search"></i></div>`,
+                              action: function(inputEvent, cellEvent) {
+                                   console.log('Changed in the text', inputEvent, cellEvent);
+                               },
+                              header: true,
+                              type: 'input'
+                            })
 
-                                            const singleColDef = grid.getColDef(column.name);
-                                            if (singleColDef) {
-                                                colDef.splice(colDef.indexOf(singleColDef), 1);
-                                            }
-                                        });
-                                        grid.api.setColumnDefs(colDef);
-                                    }
-                                }]);
-
-                                if ($scope.gridOptions.api.getRangeSelections().length > 0) {
-                                    [].push.call(menuItems, {
-                                          name: 'Copy', action: function() {
-                                              $scope.gridOptions.api.copySelectedRangeToClipboard();
-                                          }
-                                      },
-                                      {
-                                          name: 'Copy With Headers', action: function() {
-                                              $scope.gridOptions.api.copySelectedRangeToClipboard(true);
-                                          }
-                                      });
-                                }
+                            if(cachedFilterValue.length >1000){
+                                menuItems.push({
+                                  name: `Limited to 1000 results`,
+                                  header: true,
+                                  type: 'info'
+                                })
                             }
+
+                             menuItems.push({
+                              name: ulList,
+                              header: true,
+                              type: 'multiValue'
+                            })
 
                             return menuItems;
                         },
@@ -1307,6 +1322,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                         onLoadMoreData($scope, result);
                         successCallback(_.map(result.data.children, function(item){ return item.data }));
                     };
+                    console.log('inside load more data, make request calling.')
                     makeRequest(options, $scope, cb);
                 }
 
@@ -2181,7 +2197,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                             $scope.$emit('DoRebuildCollapsedTags');
                             promise.resolve();
                         };
-
+                        console.log('inside iff make request calling..')
                         makeRequest(options, $scope, cb);
                     } else {
 
@@ -2190,6 +2206,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                             $scope.updateGroupByAutocompleteList();
                         }
                         $scope.scrollId = null;
+                        console.log('inside else make request calling..')
                         makeRequest(_.merge({customFinish: true}, options), $scope, (firstLoadData) => {
                             reinitGrid($scope);
                             doRefreshRawShows(true, $scope);
@@ -2284,6 +2301,9 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                 }
 
                 function makeRequest(options, $scope, cb) {
+                    console.log('make request')
+                    console.log($scope.sortColumn);
+                    console.log($scope.sortOrder);
                     options = _.merge({retries: 5}, options);
                     var promise = $q.defer();
 
@@ -2325,6 +2345,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                         from: options.from || 0
                     };
                     if(isEmbed($scope)) {
+                    console.log('This is an embedd')
                         // emulate server-side state by stripping wrappers
                         request.params = {
                             shows: _.map($scope.dataSummary.shows, 'id'),
@@ -2332,6 +2353,8 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                             pivot: _.map($scope.dataSummary.pivot, 'id'),
                             filters: $scope.dataSummary.filters,
                             search: $scope.dataSummary.search,
+                            sortColumn: $scope.sortColumn,
+                            sortOrder: $scope.sortOrder,
                             limit: {
                                 rawData: 1000,
                                 aggData: 100,
@@ -2345,7 +2368,11 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                     const queryParams = _.get($scope.tabsSection, 'options.activeTab.state.queryParams');
                     if(queryParams) {
                         request.params = queryParams;
+                        request.params.sortColumn= $scope.sortColumn;
+                        request.params.sortOrder= $scope.sortOrder;
                     }
+                    console.log('final request is ');
+                    console.log(request)
                     $http({
                         method: 'POST',
                         url: "/api/visualization/search",
@@ -2800,6 +2827,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                 }
 
                 function refreshFilter(filterToUpdate, filter, $scope){
+                console.log('refreshing filter..')
                     _.assign(filterToUpdate, filter);
                     wrapFilter(filterToUpdate, $scope);
                     setTimeout(function(){
@@ -2901,6 +2929,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                         if(!$scope.firstRequestApplied && defaultState !== currentState ) {
                             $scope.firstRequestApplied = true;
                             $scope.presetDefaultState($scope.bookmarkStateId);
+                            console.log('returning trueee')
                             return true;
                         }
                         return false;
@@ -2918,6 +2947,8 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                     if($scope.responseEventHandler) $scope.responseEventHandler.unsubscribe();
                     $scope.responseEventHandler =
                         WSocket.subscribe(`/vis/event-response/${tab.id}/${tab.currentState}` , function(e) {
+                        console.log('event subscribing....')
+                        console.log(e);
                             switch (e.type) {
                                 case 'FILTER_REFRESH':
                                     console.log('filters response >>> ', e);
@@ -2970,6 +3001,7 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                                     setDatasource($scope);
                                     break;
                                 case 'VIZ_STATE_CHANGED':
+                                    console.log('>>> VIZ state changed')
                                     if(presetDefaultStateIfNeeded()) {
                                         return;
                                     }
@@ -2990,10 +3022,12 @@ define(['./module', 'angular', 'common', 'lodash', 'moment', 'pluralize', 'ag-gr
                     function applyStateChangeEvent(e){
                         var tokens = e['@type'].split('.');
                         const colNameFormat = $scope.tabsSection.options.activeTab.state.colNameFormat;
-
+                        console.log(tokens)
+                        var t = tokens.pop();
+                        console.log(t)
                         BookmarkEventService.suppressEmit(function() {
-                            switch (tokens.pop()) {
-                                case 'FilterChangeEvent':
+                            switch (t) {
+                                case 'FilterSearchEvent':
                                     var filterToUpdate = _.find($scope.dataSummary.filters, {field: e.filter.field});
                                     refreshFilter(filterToUpdate, e.filter, $scope);
                                     break;

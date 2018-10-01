@@ -1682,6 +1682,24 @@ define([
                             $scope.ingestDataSummary.queryMode = false;
                             wrapSource(source.parentsPath[0], source);
                         }
+                        console.log('decsriptor is :')
+                        console.log(response.data.descriptor)
+                        response.data.descriptor.columns.forEach(c => {
+                            console.log('Getting filter value for '+c)
+                            $http.post(`/api/visualization/filters`, {
+                                 tabId: $scope.tabId,
+                                 column: c.name
+                             }).then(({data}) => {
+//                                 $parse('cachedFilterValue.'+c.name).assign($scope, data);
+                                 _.set($scope, 'cachedFilterValue.'+c.name, data);
+                             }).catch(e => {
+                                 console.log('error')
+                                console.log(e)
+                             });
+                        })
+
+
+
 // this mutation is unacceptable, but without it, we need to reimplement descriptors
                         return $http.post(`/api/docs/bookmarks/preset_settings_from_bookmark`, {
                             tabId: $scope.tabId,
